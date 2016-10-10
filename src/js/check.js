@@ -7,21 +7,18 @@ function getMessage(a, b) {
       return 'Я никуда не попал';
     }
   }
-  if (typeof a === 'number') {
+  else if (typeof a === 'number') {
     return 'Я прыгнул на ' + (a * 100) + ' сантиметров';
   }
-  var numberOfSteps = a.reduce(function(sum, current) {
-    return sum + current;
-  }, 0);
-  var distancePath = a.map(function(value, index) {
-    return value + b[index];
-  });
-
   if (Array.isArray(a)) {
+       var numberOfSteps = a.reduce(function(sum, current) {
+        return sum + current;
+    }, 0);
     return 'Я прошёл ' + numberOfSteps + ' шагов';
   }
-
   if (Array.isArray(a) && Array.isArray(b)) {
+     var distancePath = a.map(function(value, index) {
+        return value + b[index]; });
     return 'Я прошёл ' + distancePath + ' метров';
   } else {
     return 'Переданы некорректные данные';
