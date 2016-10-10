@@ -17,8 +17,8 @@ function getMessage(a, b) {
     return 'Я прошёл ' + numberOfSteps + ' шагов';
   }
   if (Array.isArray(a) && Array.isArray(b)) {
-     var distancePath = a.map(function(value, index) {
-        return value + b[index]; });
+     var distancePath = a.reduce(function(prev, current, index) {
+        return prev + current * b[index] }, 0);
     return 'Я прошёл ' + distancePath + ' метров';
   } else {
     return 'Переданы некорректные данные';
