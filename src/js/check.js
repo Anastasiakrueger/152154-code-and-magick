@@ -15,22 +15,21 @@ function getMessage(a, b) {
   if (Array.isArray(a) && Array.isArray(b)) {
 
     var distancePath = a.reduce(function(prev, current, index) {
-        return prev + current * b[index] }, 0);
-    
+      return prev + current * b[index];
+    }, 0);
     return 'Я прошёл ' + distancePath + ' метров';
   }
 
   if (Array.isArray(a)) {
 
-       var numberOfSteps = a.reduce(function(sum, current) {
-        return sum + current;
-    }, 0); 
+    var numberOfSteps = a.reduce(function(sum, current) {
+      return sum + current;
+    }, 0);
 
     return 'Я прошёл ' + numberOfSteps + ' шагов';
-  }
- else   {
+  } else {
     return 'Переданы некорректные данные';
   }
 }
 
-
+getMessage();
