@@ -13,6 +13,13 @@ window.Game = (function() {
    */
   var WIDTH = 700;
 
+  var writeMessage = {
+    WIN: 'Good job, well done!',
+    FAIL: 'Не получилось, попробуй еще раз',
+    PAUSE: 'Нажмите пробел для продолжения интереснейшего путешествия влево и вправо.',
+    INTRO: 'Добро пожаловать в игру, где пожарные не оштрафуют Вас за поджигание деревьев и гравитация потеряет свой смысл! Вас приветствует Пендальф Бородатый!'
+  };
+
   /**
    * ID уровней.
    * @enum {number}
@@ -408,21 +415,70 @@ window.Game = (function() {
      * Отрисовка экрана паузы.
      */
     _drawPauseScreen: function() {
+      var ctx = this.ctx;
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      ctx.beginPath();
+      ctx.moveTo(310, 100);
+      ctx.lineTo(610, 100);
+      ctx.lineTo(630, 240);
+      ctx.lineTo(330, 240);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.height = 200;
+      ctx.width = 400;
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.moveTo(300, 90);
+      ctx.lineTo(600, 90);
+      ctx.lineTo(620, 230);
+      ctx.lineTo(320, 230);
+      ctx.closePath();
+      ctx.fill();
+
+
+
+      function wrapText(text, marginLeft, marginTop, maxWidth, lineHeight) {
+        var words = text.split(' ');
+        var countWords = words.length;
+        var line = '';
+        for (var n = 0; n < countWords; n++) {
+          var testLine = line + words[n] + ' ';
+          var width = ctx.measureText(testLine).width;
+          maxWidth = 280;
+
+          if (width > maxWidth) {
+            ctx.fillText(line, marginLeft, marginTop);
+            line = words[n] + ' ';
+            marginTop += lineHeight;
+          } else {
+            line = testLine;
+          }
+          ctx.fillText(line, marginLeft, marginTop);
+        }
+      }
+
+      ctx.font = '16px PT Mono';
+      ctx.fillStyle = '#000';
+
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          wrapText(writeMessage.WIN, 320, 160, 300, 20);
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          wrapText(writeMessage.FAIL, 320, 160, 300, 20);
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          wrapText(writeMessage.PAUSE, 320, 160, 300, 20);
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          wrapText(writeMessage.INTRO, 320, 120, 300, 20);
           break;
       }
     },
+
+
 
     /**
      * Предзагрузка необходимых изображений для уровня.
