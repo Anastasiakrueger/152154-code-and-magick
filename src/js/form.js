@@ -20,7 +20,7 @@ window.form = (function() {
     open: function(cb) {
       formContainer.classList.remove('invisible');
       nameUser.setAttribute('required', 'required');
-      form.formIsNotValid();
+      button.setAttribute('disabled', 'disabled');
       cb();
     },
 
@@ -32,45 +32,76 @@ window.form = (function() {
       }
     },
 
-    formIsNotValid: function() {
-      button.disabled = true;
-      reviewFields.classList.remove('invisible');
-    },
 
-    formIsValid: function() {
-      button.disabled = false;
-      reviewFields.classList.add('invisible');
-    },
+
+    // commentField: function() {
+    //   if (comment.required || comment.value.length === 0) {
+    //     reviewFieldsText.style.display = 'none';
+    //   } else {
+    //     reviewFieldsName.style.display = 'block';
+    //   }
+    // },
 
     inspectionStars: function() {
       var radio = formOnPage.elements['review-mark'].value;
-      console.log(typeof radio);
       if (radio < 3) {
         comment.setAttribute('required', 'required');
       } else {
         comment.removeAttribute('required');
+        reviewFieldsName.style.display = 'none';
+      }
+      if (comment.required && comment.value !== "") {
+        reviewFieldsText.style.display = 'none';
       }
     },
 
+    // nameUserField: function() {
+    //   if (nameUser.value.length === 0) {
+    //     reviewFieldsName.style.display = 'block';
+    //   } else {
+    //     reviewFieldsName.style.display = 'none';
+    //   }
+    // },
+
+    // validateForm: function() {
+    //   form.inspectionStars();
+    //   if (!nameUser.value) {
+    //     form.formIsValid();
+    //     reviewFieldsName.classList.add('invisible');
+    //   } else {
+    //     form.formIsNotValid();
+    //     reviewFieldsName.classList.remove('invisible');
+    //   }
+    //   if (comment.required && comment.value.length === 0 ) {
+    //     form.formIsNotValid();
+    //     reviewFieldsText.classList.remove('invisible');
+    //   } else {
+    //     form.formIsValid();
+    //     reviewFieldsText.classList.add('invisible');
+    //   }
+    // }
+
     validateForm: function() {
+      var formValidOk = true;
       form.inspectionStars();
-      if (nameUser.value.length === 0) {
-        form.formIsNotValid();
-        reviewFieldsName.classList.remove('invisible');
-      } else {
-        form.formIsValid();
-        reviewFieldsName.classList.add('invisible');
+      if (!nameUser.value) {
+        formValidOk = false;
       }
-      if (comment.required && comment.value.length === 0 ) {
-        form.formIsNotValid();
-        reviewFieldsText.classList.remove('invisible');
+      if (comment.required && comment.value.length === 0) {
+        formValidOk = false;
+        reviewFields.style.display = 'none';
       } else {
-        form.formIsValid();
-        reviewFieldsText.classList.add('invisible');
+        formValidOk = true;
+      }
+
+      if (formValidOk) {
+        button.removeAttribute('disabled');
+      } else {
+        button.setAttribute('disabled', 'disabled');
       }
     }
   };
-
+    // onchange ловит событие на input radio(звездах), oninput этого не делает, поэтому добавила его
   formOnPage.onchange = form.validateForm;
   formOnPage.oninput = form.validateForm;
 
