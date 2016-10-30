@@ -21,6 +21,7 @@ window.form = (function() {
       formContainer.classList.remove('invisible');
       nameUser.setAttribute('required', 'required');
       button.setAttribute('disabled', 'disabled');
+      reviewFieldsText.classList.add('invisible');
       cb();
     },
 
@@ -32,54 +33,38 @@ window.form = (function() {
       }
     },
 
-    inspectionStars: function() {
+    hasManyStars: function() {
       var radio = formOnPage.elements['review-mark'].value;
       if (radio < 3) {
         comment.setAttribute('required', 'required');
       } else {
         comment.removeAttribute('required');
-      }
-    },
-
-    fieldNameHint: function() {
-      if (nameUser.value.length !== 0) {
-        reviewFieldsName.classList.add('invisible');
-        console.log('wtf');
-      } else {
-        reviewFieldsName.classList.remove('invisible');
-      }
-    },
-
-    fieldTextHint: function() {
-      form.inspectionStars();
-      if (comment.required && comment.value === '') {
         reviewFieldsText.classList.add('invisible');
-      } else {
-        reviewFieldsText.classList.remove('invisible');
       }
     },
 
     validateForm: function() {
-      var formValidOk = true;
-      form.inspectionStars();
+      var isFormValid = true;
+      form.hasManyStars();
       if (!nameUser.value) {
-        formValidOk = false;
+        isFormValid = false;
         reviewFieldsName.classList.remove('invisible');
       } else {
         reviewFieldsName.classList.add('invisible');
       }
       if (comment.required && comment.value.length === 0) {
-        formValidOk = false;
+        isFormValid = false;
         reviewFieldsText.classList.remove('invisible');
       } else {
         reviewFieldsText.classList.add('invisible');
       }
 
-      if (formValidOk) {
+      if (isFormValid) {
         button.removeAttribute('disabled');
         reviewFields.classList.add('invisible');
       } else {
         button.setAttribute('disabled', 'disabled');
+        reviewFields.classList.remove('invisible');
       }
     }
 
