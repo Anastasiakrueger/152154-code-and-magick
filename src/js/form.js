@@ -46,11 +46,11 @@ window.form = (function() {
     validateForm: function() {
       var isFormValid = true;
       form.hasManyStars();
-      if (!nameUser.value) {
+      if (nameUser.value) {
+        reviewFieldsName.classList.add('invisible');
+      } else {
         isFormValid = false;
         reviewFieldsName.classList.remove('invisible');
-      } else {
-        reviewFieldsName.classList.add('invisible');
       }
       if (comment.required && comment.value.length === 0) {
         isFormValid = false;
