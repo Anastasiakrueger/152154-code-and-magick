@@ -4,15 +4,18 @@ window.form = (function() {
   var formContainer = document.querySelector('.overlay-container');
   var formCloseButton = document.querySelector('.review-form-close');
   var nameUser = document.querySelector('#review-name');
-  var reviewFieldsName = document.querySelector('.review-fields-name');
+  var reviewNameFields = document.querySelector('.review-fields-name');
   var reviewFieldsText = document.querySelector('.review-fields-text');
   var reviewFields = document.querySelector('.review-fields');
   var formOnPage = document.querySelector('.review-form');
   var button = document.querySelector('.review-form-control');
   var comment = document.querySelector('#review-text');
   var reviewMark = formOnPage.elements['review-mark'].value;
+  var reviewMarkField = formOnPage.elements['review-mark'];
+  var NameField = formOnPage.elements['review-name'];
   var now = new Date();
   var GraceBirthday = new Date(now.getFullYear(), 11, 9);
+  var buttonOpenForm = document.querySelector('.reviews-controls-new');
 
   var form = {
     onClose: null,
@@ -49,10 +52,10 @@ window.form = (function() {
       var isFormValid = true;
       form.hasManyStars();
       if (nameUser.value) {
-        reviewFieldsName.classList.add('invisible');
+        reviewNameFields.classList.add('invisible');
       } else {
         isFormValid = false;
-        reviewFieldsName.classList.remove('invisible');
+        reviewNameFields.classList.remove('invisible');
       }
       if (comment.required && comment.value.length === 0) {
         isFormValid = false;
@@ -79,8 +82,8 @@ window.form = (function() {
     },
 
     saveCookies: function() {
-      var cookiesMark = window.Cookies.set('review-mark', reviewMark, {expires: form.shelfLifeCookies});
-      var cookiesName = window.Cookies.set('review-name', reviewFieldsName.value, {expires: form.shelfLifeCookies});
+      var cookiesMark = window.Cookies.set('review-mark', reviewMarkField.value, {expires: form.getTheShelfLife()});
+      var cookiesName = window.Cookies.set('review-name', NameField.value, {expires: form.getTheShelfLife()});
       return {
         cookiesMark: cookiesMark,
         cookiesName: cookiesName
@@ -94,10 +97,10 @@ window.form = (function() {
       //   getFieldMark: getFieldMark,
       //   getFieldName: getFieldName
       // };
-      if (reviewFieldsName.value) {
-        reviewFieldsName.value = getFieldName;
+      if (NameField.value) {
+        NameField.value = getFieldName;
       }
-      if (reviewMark) {
+      if (reviewMarkField) {
         reviewMark = getFieldMark;
       }
     },
@@ -106,10 +109,13 @@ window.form = (function() {
     // onchange ловит событие на input radio(звездах), oninput этого не делает, поэтому добавила его
   formOnPage.onchange = form.validateForm;
   formOnPage.oninput = form.validateForm;
-  // formOnPage.onchange = form.getTheShelfLife;
-  reviewFieldsName.addEventListener('change', form.saveCookies);
-  reviewMark.addEventListener('input', form.saveCookies);
-  form.open.addEventListener('change', form.getCookies);
+  NameField.addEventListener('input', form.saveCookies);
+
+  for (var i = 0; i < reviewMarkField.length; i++) {
+    reviewMarkField[i].addEventListener('change', form.saveCookies);
+  }
+  buttonOpenForm.addEventListener('click', form.getCookies);
+
 
 
   formCloseButton.onclick = function(evt) {
