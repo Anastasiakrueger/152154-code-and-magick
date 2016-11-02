@@ -10,6 +10,9 @@ window.form = (function() {
   var formOnPage = document.querySelector('.review-form');
   var button = document.querySelector('.review-form-control');
   var comment = document.querySelector('#review-text');
+  var reviewMark = formOnPage.elements['review-mark'].value;
+  var now = new Date();
+  var GraceBirthday = new Date(now.getFullYear(), 11, 9);
 
   var form = {
     onClose: null,
@@ -34,8 +37,7 @@ window.form = (function() {
     },
 
     hasManyStars: function() {
-      var radio = formOnPage.elements['review-mark'].value;
-      if (radio < 3) {
+      if (reviewMark < 3) {
         comment.setAttribute('required', 'required');
       } else {
         comment.removeAttribute('required');
@@ -66,12 +68,49 @@ window.form = (function() {
         button.setAttribute('disabled', 'disabled');
         reviewFields.classList.remove('invisible');
       }
-    }
+    },
+
+    getTheShelfLife: function() {
+      if (GraceBirthday > now) {
+        GraceBirthday.setFullYear(now.getFullYear() - 1);
+      }
+      var ShelfLifeCookies = Math.round((now - GraceBirthday) / (3600 * 24 * 1000));
+      return ShelfLifeCookies;
+    },
+
+    saveCookies: function() {
+      var cookiesMark = window.Cookies.set('review-mark', reviewMark, {expires: form.shelfLifeCookies});
+      var cookiesName = window.Cookies.set('review-name', reviewFieldsName.value, {expires: form.shelfLifeCookies});
+      return {
+        cookiesMark: cookiesMark,
+        cookiesName: cookiesName
+      };
+
+    },
+    getCookies: function() {
+      var getFieldMark = window.Cookies.get('review-mark');
+      var getFieldName = window.Cookies.get('review-name');
+      // return {
+      //   getFieldMark: getFieldMark,
+      //   getFieldName: getFieldName
+      // };
+      if (reviewFieldsName.value) {
+        reviewFieldsName.value = getFieldName;
+      }
+      if (reviewMark) {
+        reviewMark = getFieldMark;
+      }
+      console.log('hell year');
+    },
 
   };
     // onchange ловит событие на input radio(звездах), oninput этого не делает, поэтому добавила его
   formOnPage.onchange = form.validateForm;
   formOnPage.oninput = form.validateForm;
+  formOnPage.onchange = form.getTheShelfLife;
+  reviewFieldsName.oninput = form.saveCookies;
+  form.open.onchange = form.getCookies;
+  // formOnPage.onchange = form.saveCookies;
 
 
   formCloseButton.onclick = function(evt) {
