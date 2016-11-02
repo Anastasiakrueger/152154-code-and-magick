@@ -100,17 +100,16 @@ window.form = (function() {
       if (reviewMark) {
         reviewMark = getFieldMark;
       }
-      console.log('hell year');
     },
 
   };
     // onchange ловит событие на input radio(звездах), oninput этого не делает, поэтому добавила его
   formOnPage.onchange = form.validateForm;
   formOnPage.oninput = form.validateForm;
-  formOnPage.onchange = form.getTheShelfLife;
-  reviewFieldsName.oninput = form.saveCookies;
-  form.open.onchange = form.getCookies;
-  // formOnPage.onchange = form.saveCookies;
+  // formOnPage.onchange = form.getTheShelfLife;
+  reviewFieldsName.addEventListener('change', form.saveCookies);
+  reviewMark.addEventListener('input', form.saveCookies);
+  form.open.addEventListener('change', form.getCookies);
 
 
   formCloseButton.onclick = function(evt) {
