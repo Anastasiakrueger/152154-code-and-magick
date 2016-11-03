@@ -10,7 +10,7 @@ window.form = (function() {
   var formOnPage = document.querySelector('.review-form');
   var button = document.querySelector('.review-form-control');
   var comment = document.querySelector('#review-text');
-  var reviewMark = formOnPage.elements['review-mark'].value;
+  // var reviewMark = formOnPage.elements['review-mark'].value;
   var reviewMarkField = formOnPage.elements['review-mark'];
   var NameField = formOnPage.elements['review-name'];
   var now = new Date();
@@ -40,7 +40,7 @@ window.form = (function() {
     },
 
     hasManyStars: function() {
-      if (reviewMark < 3) {
+      if (reviewMarkField.value < 3) {
         comment.setAttribute('required', 'required');
       } else {
         comment.removeAttribute('required');
@@ -101,7 +101,7 @@ window.form = (function() {
         NameField.value = getFieldName;
       }
       if (reviewMarkField) {
-        reviewMark = getFieldMark;
+        reviewMarkField = getFieldMark;
       }
     },
 
@@ -109,6 +109,7 @@ window.form = (function() {
     // onchange ловит событие на input radio(звездах), oninput этого не делает, поэтому добавила его
   formOnPage.onchange = form.validateForm;
   formOnPage.oninput = form.validateForm;
+  // formOnPage.addEventListener('change', form.validateForm);
   NameField.addEventListener('input', form.saveCookies);
 
   for (var i = 0; i < reviewMarkField.length; i++) {
