@@ -12,7 +12,6 @@ window.form = (function() {
   var comment = document.querySelector('#review-text');
   // var reviewMark = formOnPage.elements['review-mark'].value;
   var reviewMarkField = formOnPage.elements['review-mark'];
-  var NameField = formOnPage.elements['review-name'];
   var now = new Date();
   var GraceBirthday = new Date(now.getFullYear(), 11, 9);
   var buttonOpenForm = document.querySelector('.reviews-controls-new');
@@ -83,7 +82,7 @@ window.form = (function() {
 
     saveCookies: function() {
       var cookiesMark = window.Cookies.set('review-mark', reviewMarkField.value, {expires: form.getTheShelfLife()});
-      var cookiesName = window.Cookies.set('review-name', NameField.value, {expires: form.getTheShelfLife()});
+      var cookiesName = window.Cookies.set('review-name', nameUser.value, {expires: form.getTheShelfLife()});
       return {
         cookiesMark: cookiesMark,
         cookiesName: cookiesName
@@ -91,26 +90,25 @@ window.form = (function() {
 
     },
     getCookies: function() {
+
       var getFieldMark = window.Cookies.get('review-mark');
       var getFieldName = window.Cookies.get('review-name');
-      // return {
-      //   getFieldMark: getFieldMark,
-      //   getFieldName: getFieldName
-      // };
-      if (NameField.value) {
-        NameField.value = getFieldName;
+      var starCookie = formOnPage.elements['review-mark'].value;
+
+      if (nameUser.value) {
+        nameUser.value = getFieldName;
       }
-      if (reviewMarkField) {
-        reviewMarkField = getFieldMark;
+      if (typeof starCookie === 'string') {
+        starCookie = getFieldMark;
       }
     },
 
   };
-    // onchange ловит событие на input radio(звездах), oninput этого не делает, поэтому добавила его
+
   formOnPage.onchange = form.validateForm;
   formOnPage.oninput = form.validateForm;
   // formOnPage.addEventListener('change', form.validateForm);
-  NameField.addEventListener('input', form.saveCookies);
+  nameUser.addEventListener('input', form.saveCookies);
 
   for (var i = 0; i < reviewMarkField.length; i++) {
     reviewMarkField[i].addEventListener('change', form.saveCookies);
