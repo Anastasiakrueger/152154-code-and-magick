@@ -93,16 +93,9 @@ window.form = (function() {
 
       var getFieldMark = window.Cookies.get('review-mark');
       var getFieldName = window.Cookies.get('review-name');
-      var starCookie = formOnPage.elements['review-mark'].value;
-
-      if (nameUser.value) {
-        nameUser.value = getFieldName;
-      }
-      if (typeof starCookie === 'string') {
-        starCookie = getFieldMark;
-      }
-    },
-
+      nameUser.value = getFieldName;
+      formOnPage.elements['review-mark'].value = getFieldMark;
+    }
   };
 
   formOnPage.onchange = form.validateForm;
